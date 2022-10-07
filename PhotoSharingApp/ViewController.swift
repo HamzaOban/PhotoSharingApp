@@ -17,6 +17,22 @@ class ViewController: UIViewController {
         // Do any additional setup after loading the view.
     }
     @IBAction func login(_ sender: Any) {
+        if sifreTextField.text != "" && emailTextField.text != "" {
+            //registration procedures
+            //asnyc
+            Auth.auth().signIn(withEmail: emailTextField.text!, password: sifreTextField.text!) { authdataresult, error in
+                if error != nil{
+                    self.errorMessage(titleInput: "Error!", messageInput: error?.localizedDescription ?? "You got an error, try again")
+                }
+                else{
+                    self.performSegue(withIdentifier: "toFeedVC", sender: nil)
+                }
+            }
+        }
+        else{
+            //Error message
+            errorMessage(titleInput: "Error", messageInput: "Enter username and password.")
+        }
     }
     
     @IBAction func register(_ sender: Any) {
