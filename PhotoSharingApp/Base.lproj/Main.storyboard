@@ -37,7 +37,7 @@
                                     <color key="baseBackgroundColor" systemColor="systemGrayColor"/>
                                 </buttonConfiguration>
                                 <connections>
-                                    <action selector="kayitOlOnClick:" destination="BYZ-38-t0r" eventType="touchUpInside" id="MI7-uv-LYp"/>
+                                    <action selector="register:" destination="BYZ-38-t0r" eventType="touchUpInside" id="6Um-n0-Uq5"/>
                                 </connections>
                             </button>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="PickPhoto Uygulamasına Hoşgeldin" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" highlighted="YES" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="4TA-6d-jrc">
@@ -60,7 +60,7 @@
                                     <color key="baseBackgroundColor" systemColor="systemGrayColor"/>
                                 </buttonConfiguration>
                                 <connections>
-                                    <action selector="girisYapOnClick:" destination="BYZ-38-t0r" eventType="touchUpInside" id="qOd-yr-A16"/>
+                                    <action selector="login:" destination="BYZ-38-t0r" eventType="touchUpInside" id="W9a-dI-jcd"/>
                                 </connections>
                             </button>
                         </subviews>
