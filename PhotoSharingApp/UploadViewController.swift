@@ -6,6 +6,8 @@
 //
 
 import UIKit
+import FirebaseStorage
+import Firebase
 
 class UploadViewController: UIViewController, UIImagePickerControllerDelegate, UINavigationControllerDelegate {
 
@@ -33,17 +35,29 @@ class UploadViewController: UIViewController, UIImagePickerControllerDelegate, U
         self.dismiss(animated: true)
     }
     @IBAction func upload(_ sender: Any) {
+        let storage = Storage.storage()
+        let storageReference = storage.reference()
+        
+        let mediaFolder = storageReference.child("media")
+        
+        if let data = uploadImageView.image?.jpegData(compressionQuality: 0.5){
+            let imageReference = mediaFolder.child("image.jpg")
+            imageReference.putData(data) { StorageMetadata, error in
+                if error != nil {
+                    print(error?.localizedDescription)
+                }
+                else {
+                    imageReference.downloadURL { url, error in
+                        if error == nil {
+                            let imageURL = url?.absoluteURL
+                            print(imageURL)
+                        }
+                    }
+                }
+            }
+        }
+        
         
     }
-    
-    /*
-    // MARK: - Navigation
-
-    // In a storyboard-based application, you will often want to do a little preparation before navigation
-    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-        // Get the new view controller using segue.destination.
-        // Pass the selected object to the new view controller.
-    }
-    */
 
 }
