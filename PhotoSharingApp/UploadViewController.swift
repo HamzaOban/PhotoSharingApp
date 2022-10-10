@@ -41,16 +41,37 @@ class UploadViewController: UIViewController, UIImagePickerControllerDelegate, U
         let mediaFolder = storageReference.child("media")
         
         if let data = uploadImageView.image?.jpegData(compressionQuality: 0.5){
-            let imageReference = mediaFolder.child("image.jpg")
+            let uuid = UUID().uuidString
+            
+            let imageReference = mediaFolder.child("\(uuid).jpg")
+            
             imageReference.putData(data) { StorageMetadata, error in
                 if error != nil {
-                    print(error?.localizedDescription)
+                    self.errorMessageShow(title: "Error", message: error?.localizedDescription ?? "you got an error please try again")
                 }
                 else {
-                    imageReference.downloadURL { url, error in
+                    imageReference.downloadURL { [self] url, error in
                         if error == nil {
-                            let imageURL = url?.absoluteURL
-                            print(imageURL)
+                            let imageURL = url?.absoluteString
+                            if let imageURL = imageURL{
+                                let firestoreDatabase = Firestore.firestore()
+                                let email : String = Auth.auth().currentUser?.email ?? ""
+                                let firestorePost = ["gorselUrl" : imageURL,
+                                                     "comment" : self.textFieldDescription.text!,
+                                                     "email" : email,
+                                                     "date" : FieldValue.serverTimestamp() ] as! [String : Any]
+                                firestoreDatabase.collection("Post").addDocument(data: firestorePost) { error in
+                                    if error != nil{
+                                        self.errorMessageShow(title: "Error", message: "you got an error please try again")
+                                    }else{
+                                        
+                                        self.uploadImageView.image = UIImage(named: "icloud.and.arrow.down")
+                                        self.textFieldDescription.text = ""
+                                        self.tabBarController?.selectedIndex = 0
+                                    }
+                                }
+                            }
+                           
                         }
                     }
                 }
@@ -58,6 +79,12 @@ class UploadViewController: UIViewController, UIImagePickerControllerDelegate, U
         }
         
         
+    }
+    func errorMessageShow(title : String, message : String){
+        let alert = UIAlertController(title: title, message: message, preferredStyle: .alert)
+        let okButton = UIAlertAction()
+        alert.addAction(okButton)
+        self.present(alert, animated: true)
     }
 
 }
